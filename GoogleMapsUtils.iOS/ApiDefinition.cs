@@ -1,11 +1,11 @@
-﻿using System;
+﻿﻿﻿using System;
 using CoreLocation;
 using Foundation;
 using ObjCRuntime;
 using UIKit;
 using Google.Maps;
 
-namespace GMCluster
+namespace Adapptor.GoogleMapsUtils.Ios
 {
 	// @protocol GMUClusterItem <NSObject>
 	[Protocol, Model]
@@ -350,4 +350,74 @@ namespace GMCluster
 	interface GMUNonHierarchicalDistanceBasedAlgorithm : GMUClusterAlgorithm
 	{
 	}
+
+    // KML support
+
+    [Protocol, Model]
+    [BaseType (typeof (NSObject))]
+    interface GMUGeometry
+    {
+        [Abstract]
+        [Export ("type")]
+        string Type { get; }
+    }
+
+    interface IGMUGeometry { };
+
+    [BaseType (typeof (NSObject))]
+    interface GMUStyle
+    {
+    }
+
+    // @protocol GMUGeometryContainer<NSObject>
+	[Protocol, Model]
+	[BaseType (typeof (NSObject))]
+	interface GMUGeometryContainer
+	{
+        // @property(nonatomic, readonly) id<GMUGeometry> geometry;
+        [Abstract]
+        [Export ("geometry")]
+        IGMUGeometry Geometry { get; }
+        // @property(nonatomic, nullable) GMUStyle *style;
+        [Abstract]
+        [Export ("style")]
+        GMUStyle Style { get; }
+	}
+
+	interface IGMUGeometryContainer { };
+
+    // @interface GMUKMLParser : NSObject
+    [BaseType (typeof (NSObject))]
+    interface GMUKMLParser
+    {
+        [Export ("initWithURL:")]
+        IntPtr Constructor (NSUrl url);
+
+        [Export ("initWithData:")]
+        IntPtr Constructor (NSData data);
+
+        [Export ("parse")]
+        void Parse();
+
+        // @property(nonatomic, readonly) NSArray<id<GMUGeometryContainer>> *placemarks;
+        [Export ("placemarks")]
+        IGMUGeometryContainer [] Placemarks { get; }
+
+        // @property(nonatomic, readonly) NSArray<GMUStyle *> *styles;
+        [Export ("styles")]
+        GMUStyle [] Styles { get; }
+    }
+
+    [BaseType (typeof (NSObject))]
+    interface GMUGeometryRenderer
+    {
+        [Export ("initWithMap:geometries:")]
+        IntPtr Constructor (NSObject map, IGMUGeometryContainer[] geometries);
+
+        [Export ("render")]
+        void Render();
+
+        [Export ("clear")]
+        void Clear();
+    }
 }

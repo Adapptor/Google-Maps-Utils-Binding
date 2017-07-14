@@ -1,7 +1,7 @@
-﻿using System;
+﻿﻿﻿﻿﻿using System;
 
 using UIKit;
-using GMCluster;
+using Adapptor.GoogleMapsUtils.Ios;
 using Google.Maps;
 using CoreGraphics;
 using Foundation;
@@ -11,8 +11,13 @@ namespace iOSMapUtil
 	public partial class ViewController : UIViewController, IGMUClusterRendererDelegate, IGMUClusterManagerDelegate, IMapViewDelegate
 	{
 		const int kClusterItemCount = 10000;
-		const double kCameraLatitude = -33.8;
-		const double kCameraLongitude = 151.2;
+        // const double kCameraLatitude = -33.8;
+        // const double kCameraLongitude = 151.2;
+        //const double kCameraLatitude = 37.4220;
+        //const double kCameraLongitude = -122.0841;
+        const double kCameraLatitude = 37.67395167941667;
+        const double kCameraLongitude = 15.02468937557116;
+
 		const double extent = 0.2;
 
 		MapView mapView;
@@ -26,7 +31,7 @@ namespace iOSMapUtil
 		{
 			base.LoadView ();
 
-			var camera = CameraPosition.FromCamera (kCameraLatitude, kCameraLongitude, 6);
+			var camera = CameraPosition.FromCamera (kCameraLatitude, kCameraLongitude, 17);
 			mapView = MapView.FromCamera (CGRect.Empty, camera);
 			mapView.MyLocationEnabled = true;
 
@@ -37,7 +42,8 @@ namespace iOSMapUtil
 		{
 			base.ViewDidLoad ();
 
-			AddCluster ();
+			// AddCluster ();
+            AddKml();
 		}
 
 		public double GetRandomNumber(double minimum, double maximum)
@@ -73,6 +79,21 @@ namespace iOSMapUtil
 
 			clusterManager.SetDelegate (this, this);
 		}
+
+        void AddKml()
+        {
+            var path = NSBundle.MainBundle.PathForResource("KML_Samples", "kml");
+            // var url = new NSUrl(path);
+            var data = NSData.FromFile(path);
+            var kmlParser = new GMUKMLParser(data);
+            kmlParser.Parse();
+
+            // var renderer = new GMUGeometryRenderer(mapView, kmlParser.Placemarks, kmlParser.Styles);
+            var placemarks = kmlParser.Placemarks;
+            var styles = kmlParser.Styles;
+            var renderer = new GMUGeometryRenderer(mapView, placemarks);
+            renderer.Render();
+        }
 
 		[Export ("renderer:willRenderMarker:")]
 		public void WillRenderMarker (GMUClusterRenderer renderer, Overlay marker)

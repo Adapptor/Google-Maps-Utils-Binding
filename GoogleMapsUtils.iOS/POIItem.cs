@@ -1,7 +1,7 @@
 ﻿using CoreLocation;
 using Foundation;
 
-namespace GMCluster
+namespace Adapptor.GoogleMapsUtils.Ios
 {
 	/// <summary>
 	/// Point of Interest Item which implements the GMUClusterItem protocol.

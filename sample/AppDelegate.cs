@@ -23,7 +23,9 @@ namespace iOSMapUtil
 			// Override point for customization after application launch.
 			// If not required for your application you can safely delete this method
 
-			var googleMapsKey = "Get One"; //as described here: https://components.xamarin.com/gettingstarted/googleiosmaps
+			const string googleMapsKey = "AIzaSyDFGYkyjixNq63dY_H1CaPo3ti8daaKdzw";
+
+			// var googleMapsKey = "Get One"; //as described here: https://components.xamarin.com/gettingstarted/googleiosmaps
 
 			if (googleMapsKey == "Get One") {
 				throw new Exception ("You must set the Google Maps API key in AppDelegate.cs");

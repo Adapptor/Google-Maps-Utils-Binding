@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace GMCluster
+namespace Adapptor.GoogleMapsUtils.Ios
 {
 	[StructLayout (LayoutKind.Sequential)]
 	public struct GQTPoint
